@@ -4,6 +4,7 @@ export interface RecordFormat {
   client: string;
   time: string;
   cpu: number | null;
+  io_wait: number | null;
   gpu: number | null;
   gpu_usage: number | null;
   gpu_memory: number | null;
@@ -33,6 +34,15 @@ export interface RecordFormat {
   process: number | null;
   connections: number | null;
   connections_udp: number | null;
+  time_wait: number | null;
+  retransmit_rate: number | null;
+  disk_read_speed: number | null;
+  disk_write_speed: number | null;
+  disk_avg_queue_len: number | null;
+  disk_avg_wait_time: number | null;
+  net_rx_dropped: number | null;
+  net_tx_dropped: number | null;
+  softirq_pct: number | null;
 }
 
 export function liveDataToRecords(
@@ -44,6 +54,7 @@ export function liveDataToRecords(
     client: client,
     time: data.updated_at || "",
     cpu: data.cpu.usage ?? 0,
+    io_wait: data.cpu.io_wait ?? 0,
     gpu: 0,
     gpu_usage: data.gpu?.average_usage ?? 0,
     gpu_memory: data.gpu ?
@@ -73,6 +84,15 @@ export function liveDataToRecords(
     process: data.process ?? 0,
     connections: data.connections.tcp ?? 0,
     connections_udp: data.connections.udp ?? 0,
+    time_wait: data.tcp_extra?.time_wait ?? 0,
+    retransmit_rate: data.tcp_extra?.retransmit_rate ?? 0,
+    disk_read_speed: data.disk_io?.read_speed ?? 0,
+    disk_write_speed: data.disk_io?.write_speed ?? 0,
+    disk_avg_queue_len: data.disk_io?.avg_queue_len ?? 0,
+    disk_avg_wait_time: data.disk_io?.avg_wait_time ?? 0,
+    net_rx_dropped: data.net_extra?.rx_dropped ?? 0,
+    net_tx_dropped: data.net_extra?.tx_dropped ?? 0,
+    softirq_pct: data.net_extra?.softirq_pct ?? 0,
   }));
 }
 

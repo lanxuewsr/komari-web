@@ -196,7 +196,18 @@
     "type": "类型",
     "udp_connections": "UDP",
     "usage": "使用率",
-    "volatility": "波动"
+    "volatility": "波动",
+    "io_wait": "IO等待",
+    "time_wait": "TIME_WAIT",
+    "retransmit_rate": "重传率",
+    "disk_io_speed": "磁盘读写速度",
+    "disk_read": "读取",
+    "disk_write": "写入",
+    "disk_io_latency": "磁盘IO延迟",
+    "disk_queue": "队列深度",
+    "disk_wait": "等待时间(ms)",
+    "net_drops": "网络丢包",
+    "softirq": "软中断"
   },
   "close": "关闭",
   "color": {

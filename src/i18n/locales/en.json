@@ -196,7 +196,18 @@
     "type": "Type",
     "udp_connections": "UDP",
     "usage": "Usage",
-    "volatility": "Vol"
+    "volatility": "Vol",
+    "io_wait": "IO Wait",
+    "time_wait": "TIME_WAIT",
+    "retransmit_rate": "Retransmit Rate",
+    "disk_io_speed": "Disk I/O Speed",
+    "disk_read": "Read",
+    "disk_write": "Write",
+    "disk_io_latency": "Disk I/O Latency",
+    "disk_queue": "Queue Depth",
+    "disk_wait": "Wait Time(ms)",
+    "net_drops": "Network Drops",
+    "softirq": "SoftIRQ"
   },
   "close": "Close",
   "color": {

@@ -6,6 +6,7 @@ export type LiveData = {
 export type Record = {
   cpu: {
     usage: number;
+    io_wait?: number;
   };
   ram: {
     used: number;
@@ -30,6 +31,23 @@ export type Record = {
   connections: {
     tcp: number;
     udp: number;
+  };
+  tcp_extra?: {
+    time_wait: number;
+    retransmit_rate: number;
+  };
+  disk_io?: {
+    read_speed: number;
+    write_speed: number;
+    avg_queue_len: number;
+    avg_wait_time: number;
+  };
+  net_extra?: {
+    rx_dropped: number;
+    tx_dropped: number;
+    rx_errors: number;
+    tx_errors: number;
+    softirq_pct: number;
   };
   gpu?: {
     count: number;

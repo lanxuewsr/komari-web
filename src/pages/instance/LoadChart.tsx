@@ -742,6 +742,426 @@ const LoadChart = ({ data = [] }: LoadChartProps) => {
             </LineChart>
           </ChartContainer>
         </Card>
+        {/* CPU IO Wait */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.io_wait"),
+            live_data?.cpu?.io_wait ? `${live_data.cpu.io_wait.toFixed(2)}%` : "-"
+          )}
+          <ChartContainer
+            config={{
+              io_wait: {
+                label: t("chart.io_wait"),
+                color: primaryColor,
+              },
+            }}
+          >
+            <AreaChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                domain={[0, 100]}
+                tickFormatter={(value, index) =>
+                  index !== 0 ? `${value}%` : ""
+                }
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                formatter={percentageFormatter}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Area
+                dataKey="io_wait"
+                animationDuration={0}
+                stroke={primaryColor}
+                fill={primaryColor}
+                opacity={0.8}
+                dot={false}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </Card>
+        {/* TIME_WAIT */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.time_wait"),
+            live_data?.tcp_extra?.time_wait ?? "-"
+          )}
+          <ChartContainer
+            config={{
+              time_wait: {
+                label: t("chart.time_wait"),
+                color: secondaryColor,
+              },
+            }}
+          >
+            <LineChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value, index) =>
+                  index !== 0 ? `${value}` : ""
+                }
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Line
+                dataKey="time_wait"
+                animationDuration={0}
+                stroke={secondaryColor}
+                fill={secondaryColor}
+                opacity={0.8}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </Card>
+        {/* Retransmit Rate */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.retransmit_rate"),
+            live_data?.tcp_extra?.retransmit_rate
+              ? `${live_data.tcp_extra.retransmit_rate.toFixed(4)}%`
+              : "-"
+          )}
+          <ChartContainer
+            config={{
+              retransmit_rate: {
+                label: t("chart.retransmit_rate"),
+                color: colors[3],
+              },
+            }}
+          >
+            <AreaChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value, index) =>
+                  index !== 0 ? `${value.toFixed(4)}%` : ""
+                }
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                formatter={(value: number) => `${value.toFixed(4)}%`}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Area
+                dataKey="retransmit_rate"
+                animationDuration={0}
+                stroke={colors[3]}
+                fill={colors[3]}
+                opacity={0.8}
+                dot={false}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </Card>
+        {/* Disk I/O Speed */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.disk_io_speed"),
+            <Flex gap="0" align="end" direction="column" className="text-sm">
+              <span>R: {formatBytes(live_data?.disk_io?.read_speed || 0)}/s</span>
+              <span>W: {formatBytes(live_data?.disk_io?.write_speed || 0)}/s</span>
+            </Flex>
+          )}
+          <ChartContainer
+            config={{
+              disk_read_speed: {
+                label: t("chart.disk_read"),
+                color: primaryColor,
+              },
+              disk_write_speed: {
+                label: t("chart.disk_write"),
+                color: colors[3],
+              },
+            }}
+          >
+            <LineChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={(value, index) =>
+                  index !== 0 ? `${formatBytes(value)}/s` : ""
+                }
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                formatter={(value: number) => `${formatBytes(value)}/s`}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Line
+                dataKey="disk_read_speed"
+                animationDuration={0}
+                stroke={primaryColor}
+                fill={primaryColor}
+                opacity={0.8}
+                dot={false}
+              />
+              <Line
+                dataKey="disk_write_speed"
+                animationDuration={0}
+                stroke={colors[3]}
+                fill={colors[3]}
+                opacity={0.8}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </Card>
+        {/* Disk Queue & Wait Time */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.disk_io_latency"),
+            <Flex gap="0" align="end" direction="column" className="text-sm">
+              <span>Queue: {live_data?.disk_io?.avg_queue_len?.toFixed(2) || "-"}</span>
+              <span>Wait: {live_data?.disk_io?.avg_wait_time?.toFixed(2) || "-"}ms</span>
+            </Flex>
+          )}
+          <ChartContainer
+            config={{
+              disk_avg_queue_len: {
+                label: t("chart.disk_queue"),
+                color: secondaryColor,
+              },
+              disk_avg_wait_time: {
+                label: t("chart.disk_wait"),
+                color: colors[2],
+              },
+            }}
+          >
+            <LineChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Line
+                dataKey="disk_avg_queue_len"
+                animationDuration={0}
+                stroke={secondaryColor}
+                fill={secondaryColor}
+                opacity={0.8}
+                dot={false}
+              />
+              <Line
+                dataKey="disk_avg_wait_time"
+                animationDuration={0}
+                stroke={colors[2]}
+                fill={colors[2]}
+                opacity={0.8}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </Card>
+        {/* Network Drops & Errors */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.net_drops"),
+            <Flex gap="0" align="end" direction="column" className="text-sm">
+              <span>RX Drop: {live_data?.net_extra?.rx_dropped || 0}</span>
+              <span>TX Drop: {live_data?.net_extra?.tx_dropped || 0}</span>
+            </Flex>
+          )}
+          <ChartContainer
+            config={{
+              net_rx_dropped: {
+                label: "RX Dropped",
+                color: primaryColor,
+              },
+              net_tx_dropped: {
+                label: "TX Dropped",
+                color: colors[3],
+              },
+            }}
+          >
+            <LineChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Line
+                dataKey="net_rx_dropped"
+                animationDuration={0}
+                stroke={primaryColor}
+                fill={primaryColor}
+                opacity={0.8}
+                dot={false}
+              />
+              <Line
+                dataKey="net_tx_dropped"
+                animationDuration={0}
+                stroke={colors[3]}
+                fill={colors[3]}
+                opacity={0.8}
+                dot={false}
+              />
+            </LineChart>
+          </ChartContainer>
+        </Card>
+        {/* SoftIRQ */}
+        <Card className={cn}>
+          {ChartTitle(
+            t("chart.softirq"),
+            live_data?.net_extra?.softirq_pct
+              ? `${live_data.net_extra.softirq_pct.toFixed(2)}%`
+              : "-"
+          )}
+          <ChartContainer
+            config={{
+              softirq_pct: {
+                label: t("chart.softirq"),
+                color: colors[2],
+              },
+            }}
+          >
+            <AreaChart data={chartData} accessibilityLayer margin={chartMargin}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                tickFormatter={timeFormatter}
+                interval={0}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                domain={[0, 100]}
+                tickFormatter={(value, index) =>
+                  index !== 0 ? `${value}%` : ""
+                }
+                orientation="left"
+                type="number"
+                tick={{ dx: -10 }}
+                mirror={true}
+              />
+              <ChartTooltip
+                cursor={false}
+                formatter={percentageFormatter}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={lableFormatter}
+                    indicator="dot"
+                  />
+                }
+              />
+              <Area
+                dataKey="softirq_pct"
+                animationDuration={0}
+                stroke={colors[2]}
+                fill={colors[2]}
+                opacity={0.8}
+                dot={false}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </Card>
         {/* GPU Charts - Each GPU gets its own chart */}
         {live_data?.gpu &&
           live_data.gpu.count > 0 &&
